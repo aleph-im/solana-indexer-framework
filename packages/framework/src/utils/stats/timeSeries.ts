@@ -54,8 +54,8 @@ export class TimeSeriesStats<I, O> {
     account: string,
     {
       timeFrame,
-      startDate,
-      endDate,
+      startTimestamp,
+      endTimestamp,
       limit = 1000,
       reverse = true,
     }: AccountStatsFilters,
@@ -63,8 +63,8 @@ export class TimeSeriesStats<I, O> {
     const { type } = this.config
 
     const values = await this.timeSeriesDAL.getAllValuesFromTo(
-      [account, type, Duration.fromISO(timeFrame).toMillis(), startDate ? DateTime.fromISO(startDate)?.toMillis() : undefined],
-      [account, type, Duration.fromISO(timeFrame).toMillis(), endDate ? DateTime.fromISO(endDate)?.toMillis() : undefined],
+      [account, type, Duration.fromISO(timeFrame).toMillis(), startTimestamp],
+      [account, type, Duration.fromISO(timeFrame).toMillis(), endTimestamp],
       { limit, reverse },
     )
 

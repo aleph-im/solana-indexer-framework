@@ -79,8 +79,8 @@ export type AccountStats<V = any> = {
 
 export type AccountStatsFilters = {
   timeFrame: string
-  startDate?: string
-  endDate?: string
+  startTimestamp?: number
+  endTimestamp?: number
   limit?: number
   reverse?: boolean
 }
