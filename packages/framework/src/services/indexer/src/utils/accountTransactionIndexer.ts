@@ -198,26 +198,26 @@ export class AccountTransactionIndexer {
 
     const targetRange = ranges[ranges.length - 1]
 
-    const endDate = targetRange.end.toMillis()
-    const startDate = Math.max(
+    const endTimestamp = targetRange.end.toMillis()
+    const startTimestamp = Math.max(
       targetRange.start.toMillis(),
-      endDate - this.config.chunkTimeframe,
+      endTimestamp - this.config.chunkTimeframe,
     )
 
-    const requests = [{ account, startDate, endDate }]
+    const requests = [{ account, startTimestamp, endTimestamp }]
 
     // @note: if we finished with the latest range, take also the next one and do a request
     // This prevents from getting stuck on new ranges coming in real time
-    if (endDate - startDate < this.config.chunkTimeframe && ranges.length > 1) {
+    if (endTimestamp - startTimestamp < this.config.chunkTimeframe && ranges.length > 1) {
       const targetRange = ranges[ranges.length - 2]
 
-      const endDate = targetRange.end.toMillis()
-      const startDate = Math.max(
+      const endTimestamp = targetRange.end.toMillis()
+      const startTimestamp = Math.max(
         targetRange.start.toMillis(),
-        endDate - this.config.chunkTimeframe,
+        endTimestamp - this.config.chunkTimeframe,
       )
 
-      requests.push({ account, startDate, endDate })
+      requests.push({ account, startTimestamp, endTimestamp })
     }
 
     await Promise.all(requests.map(this.fetchRangeByDate.bind(this)))
@@ -325,8 +325,8 @@ export class AccountTransactionIndexer {
       // @note: Process the response (delegated to the domain layer)
       await this.handler.onTxDateRange({
         account,
-        startDate: range.startDate,
-        endDate: range.endDate,
+        startTimestamp: range.startTimestamp,
+        endTimestamp: range.endTimestamp,
         txs: response,
       })
 

@@ -74,7 +74,7 @@ export class TimeSeriesStats<I, O> {
       value.data.type = type
 
       series.push({
-        date: DateTime.fromMillis(value.startDate).toUTC().toISO(),
+        date: DateTime.fromMillis(value.startTimestamp).toUTC().toISO(),
         value: value.data,
       })
 
@@ -196,8 +196,8 @@ export class TimeSeriesStats<I, O> {
             account,
             type,
             timeFrame: timeFrameInMillis,
-            startDate: interval.start.toMillis(),
-            endDate: interval.end.minus(1).toMillis(),
+            startTimestamp: interval.start.toMillis(),
+            endTimestamp: interval.end.minus(1).toMillis(),
             data,
           })
         }
@@ -224,10 +224,10 @@ export class TimeSeriesStats<I, O> {
 
       // @note: Save states for all interval, either with empty data or not
       const stateEntries: StatsState[] = entries.map(
-        ({account, startDate, endDate, type, timeFrame}) => ({
+        ({account, startTimestamp, endTimestamp, type, timeFrame}) => ({
           account,
-          startDate,
-          endDate,
+          startTimestamp,
+          endTimestamp,
           type,
           timeFrame,
           state: StatsStateStatus.Processed,
@@ -312,8 +312,8 @@ export class TimeSeriesStats<I, O> {
 
     const newStates = newRanges.map((range) => {
       return {
-        startDate: range.start.toMillis(),
-        endDate: range.end.toMillis(),
+        startTimestamp: range.start.toMillis(),
+        endTimestamp: range.end.toMillis(),
         timeFrame: range.toDuration().toMillis(),
         state: Processed,
         account,
@@ -323,8 +323,8 @@ export class TimeSeriesStats<I, O> {
 
     const oldStates = oldRanges.map((range) => {
       return {
-        startDate: range.start.toMillis(),
-        endDate: range.end.toMillis(),
+        startTimestamp: range.start.toMillis(),
+        endTimestamp: range.end.toMillis(),
         timeFrame: range.toDuration().toMillis(),
         state: Processed,
         account,

@@ -44,8 +44,8 @@ export abstract class IndexerWorkerDomain implements IndexerWorkerDomainI {
   abstract onNewAccount(config: AccountIndexerRequestArgs): Promise<void>
 
   async onTxDateRange(response: TransactionDateRangeResponse): Promise<void> {
-    const { account, startDate, endDate } = response
-    console.log('Processing', account, startDate, endDate)
+    const { account, startTimestamp, endTimestamp } = response
+    console.log('Processing', account, startTimestamp, endTimestamp)
     await this.processTransactions(response)
   }
 
@@ -66,14 +66,14 @@ export abstract class IndexerWorkerDomain implements IndexerWorkerDomainI {
   }
 
   protected mapTransactionContext(args: TransactionDateRangeResponse) {
-    const { account, startDate, endDate } = args
+    const { account, startTimestamp, endTimestamp } = args
     return (tx: ParsedTransactionV1): ParsedTransactionContextV1 => {
       return {
         tx,
         parserContext: {
           account,
-          startDate: DateTime.fromMillis(startDate),
-          endDate: DateTime.fromMillis(endDate),
+          startDate: DateTime.fromMillis(startTimestamp),
+          endDate: DateTime.fromMillis(endTimestamp),
         }
       }
     }

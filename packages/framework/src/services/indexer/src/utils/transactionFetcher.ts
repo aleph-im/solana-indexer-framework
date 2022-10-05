@@ -102,12 +102,12 @@ export class TransactionFetcher {
 
   async fetchAccountTransactionsByDate({
     account,
-    startDate,
-    endDate,
+    startTimestamp,
+    endTimestamp,
   }: AccountDateRange): Promise<number> {
     return this.handleTransactionRequest({
       type: TransactionRequestType.ByDateRange,
-      params: { account, startTimestamp: startDate, endTimestamp: endDate },
+      params: { account, startTimestamp: startTimestamp, endTimestamp: endTimestamp },
     })
   }
 
