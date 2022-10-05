@@ -1,0 +1,56 @@
+version: '2'
+
+services:
+  port-indexer:
+    build: ../..
+    volumes:
+      - ~/indexer.data:/app/data:rw
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    env_file:
+      - ../../.env
+      - ./.env
+    environment:
+      - INDEXER=spl-lending
+      - LENDING_ID=port
+      - LETSENCRYPT_HOST=port.api.aleph.cloud
+      - VIRTUAL_HOST=port.api.aleph.cloud
+      - VIRTUAL_PORT=8080
+      - SOLANA_RPC=http://solrpc1.aleph.cloud:7725/
+    network_mode: bridge
+
+  solend-indexer:
+    build: ../..
+    volumes:
+      - ~/indexer.data:/app/data:rw
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    env_file:
+      - ../../.env
+      - ./.env
+    environment:
+      - INDEXER=spl-lending
+      - LENDING_ID=solend
+      - LETSENCRYPT_HOST=solend.api.aleph.cloud
+      - VIRTUAL_HOST=solend.api.aleph.cloud
+      - VIRTUAL_PORT=8080
+      - SOLANA_RPC=http://solrpc1.aleph.cloud:7717/
+    network_mode: bridge
+
+  larix-indexer:
+    build: ../..
+    volumes:
+      - ~/indexer.data:/app/data:rw
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    env_file:
+      - ../../.env
+      - ./.env
+    environment:
+      - INDEXER=spl-lending
+      - LENDING_ID=larix
+      - LETSENCRYPT_HOST=larix.api.aleph.cloud
+      - VIRTUAL_HOST=larix.api.aleph.cloud
+      - VIRTUAL_PORT=8080
+      - SOLANA_RPC=http://solrpc1.aleph.cloud:7719/
+    network_mode: bridge
