@@ -45,7 +45,7 @@ export function getIntervalFromDateRange(startTime: number, endTime: number): In
 
 export async function* getIntervalsFromStorageStream(stream: AsyncIterable<StatsEntry>): AsyncGenerator<Interval> {
   for await (const entry of stream) {
-    yield getIntervalFromDateRange(entry.startDate, entry.endDate)
+    yield getIntervalFromDateRange(entry.startTimestamp, entry.endTimestamp)
   }
 }
 

@@ -8,8 +8,8 @@ export enum TransactionIndexerStateCode {
 
 export type TransactionIndexerState = {
   account: string
-  startDate: number
-  endDate: number
+  startTimestamp: number
+  endTimestamp: number
 } & (
   | {
       state: TransactionIndexerStateCode.Processed
@@ -37,12 +37,12 @@ const accountKey = {
 }
 
 const startDateKey = {
-  get: (e: TransactionIndexerState) => e.startDate,
+  get: (e: TransactionIndexerState) => e.startTimestamp,
   length: EntityStorage.TimestampLength,
 }
 
 const endDateKey = {
-  get: (e: TransactionIndexerState) => e.endDate,
+  get: (e: TransactionIndexerState) => e.endTimestamp,
   length: EntityStorage.TimestampLength,
 }
 

@@ -68,7 +68,7 @@ export type TimeSeries<V = any> = TimeSeriesItem<V>[]
 export type AccountTimeSeriesStats<V = any> = {
   account: string
   type: string
-  timeFrame: Duration
+  timeFrame: string
   series: TimeSeries<V>
 }
 
@@ -78,9 +78,9 @@ export type AccountStats<V = any> = {
 }
 
 export type AccountStatsFilters = {
-  timeFrame: Duration
-  startDate?: DateTime
-  endDate?: DateTime
+  timeFrame: string
+  startDate?: string
+  endDate?: string
   limit?: number
   reverse?: boolean
 }

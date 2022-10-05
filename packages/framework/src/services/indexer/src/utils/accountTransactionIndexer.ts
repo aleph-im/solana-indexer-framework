@@ -91,13 +91,13 @@ export class AccountTransactionIndexer {
 
     const pendingRanges = await generatorToArray(clipIntervals([toFetchRange], processedRanges))
 
-    const pendingMilis = pendingRanges.reduce(
-      (acc, curr) => acc + curr.toDuration().as('milliseconds'),
+    const pendingMillis = pendingRanges.reduce(
+      (acc, curr) => acc + curr.toDuration().toMillis(),
       0,
     )
 
     const processedMillis = processedRanges.reduce(
-      (acc, curr) => acc + curr.toDuration().as('milliseconds'),
+      (acc, curr) => acc + curr.toDuration().toMillis(),
       0,
     )
 
@@ -108,7 +108,7 @@ export class AccountTransactionIndexer {
     const accurate = state?.completeHistory || false
 
     const progress = Number(
-      ((processedMillis / (processedMillis + pendingMilis)) * 100).toFixed(2),
+      ((processedMillis / (processedMillis + pendingMillis)) * 100).toFixed(2),
     )
 
     return {
@@ -247,8 +247,8 @@ export class AccountTransactionIndexer {
 
     const newStates = newRanges.map((range) => {
       return {
-        startDate: range.start.toMillis(),
-        endDate: range.end.toMillis(),
+        startTimestamp: range.start.toMillis(),
+        endTimestamp: range.end.toMillis(),
         timeFrame: range.toDuration().toMillis(),
         account,
         state: Processed,
@@ -258,8 +258,8 @@ export class AccountTransactionIndexer {
 
     const oldStates = oldRanges.map((range) => {
       return {
-        startDate: range.start.toMillis(),
-        endDate: range.end.toMillis(),
+        startTimestamp: range.start.toMillis(),
+        endTimestamp: range.end.toMillis(),
         timeFrame: range.toDuration().toMillis(),
         state: Processed,
         account,
@@ -278,12 +278,12 @@ export class AccountTransactionIndexer {
       `💿 compact fetching states *
         newStates: [
           ${newStates
-            .map((s) => `[${s.state}]${getIntervalFromDateRange(s.startDate, s.endDate).toISO()}`)
+            .map((s) => `[${s.state}]${getIntervalFromDateRange(s.startTimestamp, s.endTimestamp).toISO()}`)
             .join('\n')}
         ],
         oldStates: [
           ${oldStates
-            .map((s) => `[${s.state}]${getIntervalFromDateRange(s.startDate, s.endDate).toISO()}`)
+            .map((s) => `[${s.state}]${getIntervalFromDateRange(s.startTimestamp, s.endTimestamp).toISO()}`)
             .join('\n')}
         ]
       `,

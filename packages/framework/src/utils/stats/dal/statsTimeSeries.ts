@@ -6,9 +6,9 @@ export type StatsTimeSeries<T> = {
   // @note: time frame in millis
   timeFrame: number
   // @note: start date in millis
-  startDate: number
+  startTimestamp: number
   // @note: end date in millis
-  endDate: number
+  endTimestamp: number
   data: T
 }
 
@@ -31,7 +31,7 @@ const timeFrameKey = {
 
 // @note: start date in millis of the interval
 const startDateKey = {
-  get: (e: StatsTimeSeries<unknown>) => e.startDate,
+  get: (e: StatsTimeSeries<unknown>) => e.startTimestamp,
   length: EntityStorage.TimestampLength,
 }
 

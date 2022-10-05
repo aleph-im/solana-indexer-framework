@@ -276,7 +276,7 @@ export class FetcherMsMain implements FetcherMsI, PrivateFetcherMsI {
     args: FetchAccountTransactionsByDateRequestArgs,
     save = true,
   ): Promise<void | AsyncIterable<string[]>> {
-    const { account, startDate, endDate } = args
+    const { account, startTimestamp, endTimestamp } = args
 
     const state = await this.getAccountFetcherState({ account })
     if (!state) return
@@ -297,16 +297,16 @@ export class FetcherMsMain implements FetcherMsI, PrivateFetcherMsI {
 
     // @todo: make sure that there wont be incomplete ranges on the right
     // containing transactions with the same timestamp, in that case we
-    // are lossing data
+    // are losing data
     const inRange =
-      (completeHistory || startDate > firstTimestamp) &&
-      endDate <= lastTimestamp
+      (completeHistory || startTimestamp > firstTimestamp) &&
+      endTimestamp <= lastTimestamp
 
     if (!inRange) return
 
     const signaturesQuery = await this.signatureDAL
       .useIndex(SignatureDALIndex.AccountTimestampIndex)
-      .getAllFromTo([account, startDate], [account, endDate], {
+      .getAllFromTo([account, startTimestamp], [account, endTimestamp], {
         reverse: false,
       })
 

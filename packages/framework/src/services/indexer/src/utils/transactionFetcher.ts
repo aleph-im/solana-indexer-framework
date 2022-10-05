@@ -29,7 +29,6 @@ import {
   AccountSlotRange,
   GetTransactionPendingRequestsRequestArgs,
 } from '../types.js'
-import {DateTime} from "luxon";
 
 const {
   Future,
@@ -108,7 +107,7 @@ export class TransactionFetcher {
   }: AccountDateRange): Promise<number> {
     return this.handleTransactionRequest({
       type: TransactionRequestType.ByDateRange,
-      params: { account, startDate, endDate },
+      params: { account, startTimestamp: startDate, endTimestamp: endDate },
     })
   }
 
@@ -292,7 +291,7 @@ export class TransactionFetcher {
 
     switch (request.type) {
       case TransactionRequestType.ByDateRange: {
-        const { account, startDate, endDate } = request.params
+        const { account, startTimestamp, endTimestamp } = request.params
 
         for (const tx of txs) {
           if (!tx.parsed) {
@@ -306,7 +305,7 @@ export class TransactionFetcher {
 
           const timestamp = (tx.blockTime || 0) * 1000
 
-          let valid = timestamp >= startDate && timestamp <= endDate
+          let valid = timestamp >= startTimestamp && timestamp <= endTimestamp
 
           valid =
             valid &&
@@ -360,7 +359,7 @@ export class TransactionFetcher {
     const nonce = this.nonce.get()
     const future = this.getFuture(nonce)
 
-    // @note: Sometimes we receive the responses before inserting the pendings signatures on
+    // @note: Sometimes we receive the responses before inserting the pending signatures on
     // the db, the purpose of this mutex is to avoid this
     const now1 = Date.now()
     const release = await this.requestMutex.acquire()
@@ -379,11 +378,11 @@ export class TransactionFetcher {
             return [signatures]
           }
           case TransactionRequestType.ByDateRange: {
-            const { account, startDate, endDate } = requestParams.params
+            const { account, startTimestamp, endTimestamp } = requestParams.params
             return this.fetcherMsClient.fetchAccountTransactionsByDate({
               account,
-              startDate: startDate,
-              endDate: endDate,
+              startTimestamp,
+              endTimestamp,
             })
           }
           case TransactionRequestType.BySlotRange: {

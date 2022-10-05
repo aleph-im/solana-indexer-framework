@@ -1,5 +1,5 @@
 import { Utils } from '@aleph-indexer/core'
-import {DateTime, Interval} from 'luxon'
+import {DateTime, Duration, Interval} from 'luxon'
 import {
   getIntervalFromDateRange,
   getPreviousInterval,
@@ -63,8 +63,8 @@ export class TimeSeriesStats<I, O> {
     const { type } = this.config
 
     const values = await this.timeSeriesDAL.getAllValuesFromTo(
-      [account, type, timeFrame.toMillis(), startDate?.toMillis()],
-      [account, type, timeFrame.toMillis(), endDate?.toMillis()],
+      [account, type, Duration.fromISO(timeFrame).toMillis(), startDate ? DateTime.fromISO(startDate)?.toMillis() : undefined],
+      [account, type, Duration.fromISO(timeFrame).toMillis(), endDate ? DateTime.fromISO(endDate)?.toMillis() : undefined],
       { limit, reverse },
     )
 
@@ -242,12 +242,12 @@ export class TimeSeriesStats<I, O> {
         const firstItem = stateEntries[firstIndex]
 
         if (
-          firstItem.startDate < pendingRange.start.toMillis() &&
+          firstItem.startTimestamp < pendingRange.start.toMillis() &&
           pendingRange.start.toMillis() !== minDate
         ) {
           console.log(
             `📊 Recalculate incomplete FIRST interval ${type} ${timeFrameName} ${getIntervalFromDateRange(
-              firstItem.startDate, firstItem.endDate
+              firstItem.startTimestamp, firstItem.endTimestamp
             ).toISO()}`,
           )
           reverse ? stateEntries.pop() : stateEntries.shift()
@@ -260,10 +260,10 @@ export class TimeSeriesStats<I, O> {
         const lastIndex = reverse ? 0 : stateEntries.length - 1
         const lastItem = stateEntries[lastIndex]
 
-        if (lastItem.endDate - 1 > pendingRange.end.toMillis()) {
+        if (lastItem.endTimestamp - 1 > pendingRange.end.toMillis()) {
           console.log(
             `📊 Recalculate incomplete LAST interval ${type} ${timeFrameName} ${getIntervalFromDateRange(
-              lastItem.startDate, lastItem.endDate
+              lastItem.startTimestamp, lastItem.endTimestamp
             ).toISO()}`,
           )
           reverse ? stateEntries.shift() : stateEntries.pop()

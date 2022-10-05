@@ -1,6 +1,5 @@
 import { RawTransactionV1 } from '@aleph-indexer/core'
 import { FetcherMsI, PrivateFetcherMsI } from '../interface.js'
-import {DateTime} from "luxon";
 
 export type SignatureFetcherState = {
   fetcher: string
@@ -15,7 +14,7 @@ export type SignatureFetcherState = {
 }
 
 export type FetcherPartitionRequestArgs = {
-  fetcher: string
+  fetcher?: string
 }
 
 export type FetcherState = {
@@ -52,8 +51,8 @@ export type AddAccountInfoFetcherRequestArgs =
  */
 export type FetchAccountTransactionsByDateRequestArgs =
   FetcherAccountPartitionRequestArgs & {
-    startDate: number
-    endDate: number
+    startTimestamp: number
+    endTimestamp: number
   }
 
 /**
@@ -136,8 +135,8 @@ export type FetcherDateRequest = Omit<BaseFetcherRequest, 'type'> & {
   type: FetcherOptionsTypes.AccountTransactionDateFetcher
   options: {
     account: string
-    startDate: number
-    endDate: number
+    startTimestamp: number
+    endTimestamp: number
   }
 }
 

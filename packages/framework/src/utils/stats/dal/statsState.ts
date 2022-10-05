@@ -24,11 +24,11 @@ export type StatsState = {
   /**
    * Start date in millis.
    */
-  startDate: number
+  startTimestamp: number
   /**
    * End date in millis.
    */
-  endDate: number
+  endTimestamp: number
   /**
    * Processing state. 0 = processing, 1 = processed.
    */
@@ -61,7 +61,7 @@ const timeFrameKey = {
 
 // @note: start date in millis of the interval
 const startDateKey = {
-  get: (e: StatsState) => e.startDate,
+  get: (e: StatsState) => e.startTimestamp,
   length: EntityStorage.TimestampLength,
 }
 

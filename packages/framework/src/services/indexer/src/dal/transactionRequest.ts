@@ -8,7 +8,7 @@ export enum TransactionRequestType {
 
 export type TransactionRequestDateRange = {
   type: TransactionRequestType.ByDateRange
-  params: { account: string; startDate: number; endDate: number }
+  params: { account: string; startTimestamp: number; endTimestamp: number }
 }
 
 export type TransactionRequestSlotRange = {
