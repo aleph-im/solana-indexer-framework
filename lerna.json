@@ -5,7 +5,8 @@
     "packages/middleware",
     "packages/framework",
     "packages/spl-lending",
-    "packages/pyth"
+    "packages/pyth",
+    "packages/marinade_finance"
   ],
   "version": "1.0.11"
 }
