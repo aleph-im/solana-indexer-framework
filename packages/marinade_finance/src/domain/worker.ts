@@ -13,7 +13,8 @@ import {
 } from '@aleph-indexer/framework'
 import { eventParser as eParser } from '../parsers/event.js'
 import { createEventDAL } from '../dal/event.js'
-import { ParsedEvents, MarinadeFinanceAccountInfo } from '../types.js'
+import { ParsedEvents } from '../utils/layouts/index.js'
+import {AccessTimeStats, MarinadeFinanceAccountInfo} from '../types.js'
 import { AccountDomain } from './account.js'
 import { createAccountStats } from './stats/timeSeries.js'
 import { MARINADE_FINANCE_PROGRAM_ID } from '../constants.js'
@@ -78,7 +79,7 @@ export default class IndexerDomain
     return oracle.getTimeSeriesStats(type, filters)
   }
 
-  async getStats(account: string): Promise<AccountStats> {
+  async getStats(account: string): Promise<AccountStats<AccessTimeStats>> {
     return this.getAccountStats(account)
   }
 
@@ -89,7 +90,7 @@ export default class IndexerDomain
     return res.info
   }
 
-  async getAccountStats(reserve: string): Promise<AccountStats> {
+  async getAccountStats(reserve: string): Promise<AccountStats<AccessTimeStats>> {
     const res = this.getAccount(reserve)
     return res.getStats()
   }

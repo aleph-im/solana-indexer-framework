@@ -6,10 +6,11 @@ import {
   TimeFrame,
   TimeSeriesStats,
 } from '@aleph-indexer/framework'
-import { EventDALIndex, EventStorage } from '../../dal/event.js'
-import { ParsedEvents, MarinadeFinanceInfo } from '../../types.js'
+import {EventDALIndex, EventStorage} from '../../dal/event.js'
+import {ParsedEvents} from '../../utils/layouts/index.js'
+import {AccessTimeStats} from '../../types.js'
 import statsAggregator from './statsAggregator.js'
-import eventAggregator from './timeSeriesAggregator.js'
+import accessAggregator from './timeSeriesAggregator.js'
 
 export async function createAccountStats(
   account: string,
@@ -18,12 +19,13 @@ export async function createAccountStats(
   statsStateDAL: StatsStateStorage,
   statsTimeSeriesDAL: StatsTimeSeriesStorage,
 ): Promise<AccountTimeSeriesStatsManager> {
-  const MarinadeFinanceTimeSeries = new TimeSeriesStats<
+  // @note: this aggregator is used to aggregate usage stats for the account
+  const accessTimeSeries = new TimeSeriesStats<
     ParsedEvents,
-    MarinadeFinanceInfo
+    AccessTimeStats
   >(
     {
-      type: 'marinade_finance',
+      type: 'access',
       startDate: 0,
       timeFrames: [
         TimeFrame.Hour,
@@ -38,18 +40,18 @@ export async function createAccountStats(
           .useIndex(EventDALIndex.AccoountTimestamp)
           .getAllValuesFromTo([account, startDate], [account, endDate])
       },
-      aggregate: ({ input, prevValue }): MarinadeFinanceInfo => {
-        return eventAggregator.aggregate(input, prevValue)
+      aggregate: ({ input, prevValue }): AccessTimeStats => {
+        return accessAggregator.aggregate(input, prevValue)
       },
     },
     statsStateDAL,
     statsTimeSeriesDAL,
   )
 
-  const accountTimeSeries = new AccountTimeSeriesStatsManager(
+  return new AccountTimeSeriesStatsManager(
     {
       account,
-      series: [MarinadeFinanceTimeSeries],
+      series: [accessTimeSeries],  // place your other aggregated stats here
       aggregate(args) {
         return statsAggregator.aggregate(args)
       },
@@ -58,6 +60,4 @@ export async function createAccountStats(
     statsStateDAL,
     statsTimeSeriesDAL,
   )
-
-  return accountTimeSeries
 }

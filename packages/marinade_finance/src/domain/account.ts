@@ -6,7 +6,8 @@ import {
   AccountStats,
 } from '@aleph-indexer/framework'
 import { EventDALIndex, EventStorage } from '../dal/event.js'
-import { ParsedEvents, MarinadeFinanceAccountInfo } from '../types.js'
+import { ParsedEvents } from '../utils/layouts/index.js'
+import { MarinadeFinanceAccountInfo, TimeStats } from '../types.js'
 
 export class AccountDomain {
   constructor(
@@ -26,7 +27,7 @@ export class AccountDomain {
     return this.timeSeriesStats.getTimeSeriesStats(type, filters)
   }
 
-  async getStats(): Promise<AccountStats> {
+  async getStats(): Promise<AccountStats<TimeStats>> {
     return this.timeSeriesStats.getStats()
   }
 
