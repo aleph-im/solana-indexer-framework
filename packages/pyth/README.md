@@ -7,14 +7,16 @@ INDEXES PYTH.
 - [x] Parsing instructions
 - [x] Filter events
 - [X] Parsing accounts
-- [ ] Calculating stats
+- [x] Calculating stats
     - [X] Aggregate stats
     - [X] OHLC
-    - [ ] Global stats
+    - [x] Global stats
         - [ ] Cache
 - [x] Store prices in database
-- [ ] Store stats in database
-- [ ] API
-    - [ ] Resolvers
-    - [ ] GraphQL schema
-    - [ ] GraphQL type definitions
+- [x] Store stats in database
+- [x] API
+    - [x] Resolvers
+    - [x] GraphQL schema
+    - [x] GraphQL type definitions
+    
+- [ ] Fix bugs T_T
