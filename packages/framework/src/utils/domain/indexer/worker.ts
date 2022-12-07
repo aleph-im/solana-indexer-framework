@@ -19,6 +19,7 @@ import {
   AccountStatsFilters,
   AccountStats,
 } from '../../stats/index.js'
+import { DateTime } from 'luxon'
 
 const { StreamFilter, StreamMap, StreamBuffer } = Utils
 
@@ -77,8 +78,8 @@ export abstract class IndexerWorkerDomain implements IndexerWorkerDomainI {
         tx,
         parserContext: {
           account,
-          startDate,
-          endDate,
+          startDate: DateTime.fromMillis(startDate),
+          endDate: DateTime.fromMillis(endDate),
         },
       }
     }

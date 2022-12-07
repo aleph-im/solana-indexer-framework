@@ -1,6 +1,5 @@
 import graphql, { Kind, ValueNode } from 'graphql'
 import BN from 'bn.js'
-export { GraphQLJSON, GraphQLJSONObject } from 'graphql-type-json'
 
 /**
  * GraphQL Big Number scalar type
@@ -55,5 +54,3 @@ export const GraphQLLong = new graphql.GraphQLScalarType({
     return null
   },
 })
-
-export default GraphQLBigNumber

@@ -3,7 +3,8 @@
     "packages/core",
     "packages/layout",
     "packages/middleware",
-    "packages/framework"
+    "packages/framework",
+    "packages/pyth"
   ],
   "version": "1.0.23"
 }

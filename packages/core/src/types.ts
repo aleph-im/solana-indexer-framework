@@ -223,6 +223,7 @@ export type ParsedTransactionV1 = Omit<
   signature: string
   blocktime: number
   slot: number
+  account?: string
 }
 
 export interface AlephParsedTransactionWithAccounts

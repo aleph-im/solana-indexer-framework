@@ -13,10 +13,8 @@ import {
   GraphQLType,
   GraphQLUnionType,
 } from 'graphql'
-import { GraphQLJSONObject } from '@aleph-indexer/core'
-import { TimeFrame as TF } from '../../time.js'
-import { TimeInfo } from '../types.js'
 import { TransactionRequestType as TRT } from '../../../services/indexer/src/dal/transactionRequest.js'
+import {GraphQLDuration, GraphQLJSONObject} from "graphql-scalars";
 
 // State
 
@@ -59,18 +57,6 @@ export const TransactionRequest = new GraphQLObjectType({
 export const TransactionRequestList = new GraphQLList(TransactionRequest)
 
 // Stats
-
-export const TimeFrame = new GraphQLEnumType({
-  name: 'TimeFrame',
-  values: {
-    Hour: { value: TF.Hour },
-    Day: { value: TF.Day },
-    Week: { value: TF.Week },
-    Month: { value: TF.Month },
-    Year: { value: TF.Year },
-    All: { value: TF.All },
-  },
-})
 
 export function getAccountTimeSeriesStatsType(
   customTimeSeriesTypesMap?: Record<string, GraphQLObjectType>,
@@ -115,7 +101,7 @@ export function getAccountTimeSeriesStatsType(
     fields: {
       account: { type: new GraphQLNonNull(GraphQLString) },
       type: { type: new GraphQLNonNull(GraphQLString) },
-      timeFrame: { type: new GraphQLNonNull(TimeFrame) },
+      timeFrame: { type: new GraphQLNonNull(GraphQLDuration) },
       series: { type: TimeSeries },
     },
   })
@@ -137,12 +123,9 @@ export function getAccountTimeSeriesStatsType(
   }
 }
 
-export { TimeInfo } from '../types.js'
-
 export const types: GraphQLNamedType[] = [
-  TimeInfo,
   AccountState,
-  TimeFrame,
+  GraphQLDuration,
   TransactionRequestType,
   TransactionRequest,
 ]
